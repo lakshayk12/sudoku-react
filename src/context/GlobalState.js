@@ -1,28 +1,21 @@
 import React, { createContext, useReducer } from 'react';
+import { GameGenerator } from '../components/GameGenerator';
 
 const initialState = {
-    grid: [["5", "3", ".", ".", "7", ".", ".", ".", "."],
-    ["6", ".", ".", "1", "9", "5", ".", ".", "."],
-    [".", "9", "8", ".", ".", ".", ".", "6", "."],
-    ["8", ".", ".", ".", "6", ".", ".", ".", "3"],
-    ["4", ".", ".", "8", ".", "3", ".", ".", "1"],
-    ["7", ".", ".", ".", "2", ".", ".", ".", "6"],
-    [".", "6", ".", ".", ".", ".", "2", "8", "."],
-    [".", ".", ".", "4", "1", "9", ".", ".", "5"],
-    [".", ".", ".", ".", "8", ".", ".", "7", "9"]]
+    grid: GameGenerator()
 }
 
 const reducer = (state, action) => {
     switch (action.type) {
         case 'MODIFY':
+            var tgrid = state.grid;
+            tgrid[action.payload.r][action.payload.c] = action.payload.value;
             return {
                 ...state,
-                grid: () => {
-                    var tgrid = state.grid;
-                    tgrid[action.payload.r][action.payload.c] = action.payload.value;
-                    return tgrid;
-                }
+                grid: tgrid
             }
+        default:
+            return state;
     }
 }
 
@@ -31,9 +24,15 @@ export const GlobalContext = createContext(initialState);
 export const GlobalProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
 
+    function modify(r, c, value) {
+        dispatch({ type: 'MODIFY', payload: { r, c, value } });
+        console.log("after dispatch: ", state.grid);
+    }
+
     return (
         <GlobalContext.Provider value={{
-            grid: state.grid
+            grid: state.grid,
+            modify
         }}>
             {children}
         </GlobalContext.Provider>

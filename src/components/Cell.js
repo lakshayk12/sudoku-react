@@ -1,21 +1,23 @@
 import React, { useContext, useState } from 'react'
+import { GameGenerator } from '../components/GameGenerator';
 import { GlobalContext } from '../context/GlobalState';
 
-export const Cell = ({ col }) => {
-    const { grid } = useContext(GlobalContext);
-    const [val, setVal] = useState('');
+export const Cell = ({ value, id }) => {
+    const { modify } = useContext(GlobalContext);
+    let initialGrid = GameGenerator();
+    var c = id % 9;
+    var r = (id - c) / 9;
     return (
         <div>
-            {col === '.' ?
+            {initialGrid[r][c] === '.' ?
                 <input
                     type='text'
-                    value={val}
+                    value={value == '.' ? '' : value}
                     onChange={(e) => {
-                        setVal(e.target.value)
-                        grid[0][0] = e.target.value
+                        modify(r, c, e.target.value);
                     }}
                 />
-                : col}
+                : value}
         </div>
     )
 }
