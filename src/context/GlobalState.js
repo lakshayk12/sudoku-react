@@ -1,8 +1,10 @@
 import React, { createContext, useReducer } from 'react';
 import { GameGenerator } from '../components/GameGenerator';
 
+export const initialGrid = GameGenerator();
+
 const initialState = {
-    grid: GameGenerator()
+    grid: initialGrid.map(l => ([...l])) //deep copy
 }
 
 const reducer = (state, action) => {
@@ -26,11 +28,11 @@ export const GlobalProvider = ({ children }) => {
 
     function modify(r, c, value) {
         dispatch({ type: 'MODIFY', payload: { r, c, value } });
-        console.log("after dispatch: ", state.grid);
     }
 
     return (
         <GlobalContext.Provider value={{
+            initialGrid,
             grid: state.grid,
             modify
         }}>

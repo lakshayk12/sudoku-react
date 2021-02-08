@@ -3,8 +3,7 @@ import { GameGenerator } from '../components/GameGenerator';
 import { GlobalContext } from '../context/GlobalState';
 
 export const Cell = ({ value, id }) => {
-    const { modify } = useContext(GlobalContext);
-    let initialGrid = GameGenerator();
+    const { initialGrid, modify } = useContext(GlobalContext);
     var c = id % 9;
     var r = (id - c) / 9;
     return (
