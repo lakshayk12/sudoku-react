@@ -16,6 +16,11 @@ const reducer = (state, action) => {
                 ...state,
                 grid: tgrid
             }
+        case 'SOLVE':
+            return {
+                ...state,
+                grid: action.payload.answer
+            }
         default:
             return state;
     }
@@ -30,11 +35,16 @@ export const GlobalProvider = ({ children }) => {
         dispatch({ type: 'MODIFY', payload: { r, c, value } });
     }
 
+    function solve(answer) {
+        dispatch({ type: 'SOLVE', payload: { answer } });
+    }
+
     return (
         <GlobalContext.Provider value={{
             initialGrid,
             grid: state.grid,
-            modify
+            modify,
+            solve
         }}>
             {children}
         </GlobalContext.Provider>

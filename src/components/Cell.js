@@ -1,5 +1,4 @@
-import React, { useContext, useState } from 'react'
-import { GameGenerator } from '../components/GameGenerator';
+import React, { useContext, useState } from 'react';
 import { GlobalContext } from '../context/GlobalState';
 
 export const Cell = ({ value, id }) => {
@@ -12,6 +11,7 @@ export const Cell = ({ value, id }) => {
                 <input
                     type='text'
                     value={value == '.' ? '' : value}
+                    maxLength="1"
                     onChange={(e) => {
                         modify(r, c, e.target.value);
                     }}
